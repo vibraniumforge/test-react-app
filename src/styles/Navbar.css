@@ -1,0 +1,57 @@
+#navbar {
+  font-size: 20px;
+  text-align: center;
+  font-weight: bold;
+  height: 3em;
+  background-color: blue;
+  color: white;
+}
+
+#navbar-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: baseline;
+  font: "Segoe UI";
+}
+
+#top-buttons-container {
+  height: 60px;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+}
+
+.top-button {
+  background-color: rgba(0, 120, 212, 1);
+  width: 212px;
+  height: 40px;
+  color: white;
+  font-size: 12px;
+  text-align: center;
+  margin: auto;
+}
+
+#refresh-button {
+  color: white;
+  background-color: blue;
+  font-size: 12px;
+  height: 20px;
+  width: 200px;
+  margin: auto;
+}
+
+ul {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  vertical-align: middle;
+  overflow: hidden;
+}
+
+li {
+  display: block;
+  float: left;
+  position: relative;
+  height: 1em;
+}

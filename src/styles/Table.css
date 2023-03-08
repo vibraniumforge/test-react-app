@@ -1,0 +1,13 @@
+#manage-activity-table {
+  width: 100%;
+}
+
+#manage-activity-table > td {
+  margin: 100px;
+  text-align: center;
+}
+
+.tags-input {
+  width: 66%;
+  margin-left: 50px;
+}

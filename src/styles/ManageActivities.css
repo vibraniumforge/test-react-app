@@ -1,0 +1,12 @@
+.right {
+  float: right;
+}
+
+.left {
+  float: left;
+}
+
+.tags-input {
+  font-size: 12px;
+  height: 30px;
+}
