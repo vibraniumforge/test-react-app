@@ -4,11 +4,12 @@ import "./styles/Navbar.css";
 import "./styles/UserProfile.css";
 import "./styles/Table.css";
 import "./styles/ManageActivities.css";
-import Navbar from "./components/Navbar";
+// import Navbar from "./components/Navbar";
+import NavbarRBS from "./components/NavbarRBS";
 import { Routes, Route } from "react-router-dom";
 import TimeEntry from "./components/TimeEntry";
-import ManageActivity from "./components/ManageActivities";
-import ManageActivity2 from "./components/ManageActivities2";
+// import ManageActivity from "./components/ManageActivities";
+import ManageActivities from "./components/ManageActivities";
 import UserProfile from "./components/UserProfile";
 
 export interface IUserState {
@@ -18,7 +19,7 @@ export interface IUserState {
     TimeZone: {
       Id: number;
       TimeZoneName: string;
-      MDMTimeZoneId: number | string;
+      MDMTimeZoneId: number;
       MDMTimeZoneDisplayName: string;
     };
   };
@@ -93,16 +94,16 @@ function App() {
       {
         activityId: 1,
         activityName: "Triage Shaping",
-        startDate: new Date("2/1/2023"),
-        endDate: new Date("2/10/2023"),
-        tags: "Q12023, AI, DevCrewNeeded",
+        startDate: new Date("2023-02-01T00:00:00"),
+        endDate: new Date("2023-02-10T00:00:00"),
+        tags: "Q1 2023, AI, DevCrewNeeded",
       },
       {
         activityId: 2,
         activityName: "Marketing",
-        startDate: new Date("2/19/2023"),
-        endDate: new Date("2/28/2023"),
-        tags: "Q12024, AI, DevCrewNeeded",
+        startDate: new Date("2023-02-21T00:00:00"),
+        endDate: new Date("2023-02-28T00:00:00"),
+        tags: "Q1 2024, ML, Finance",
       },
     ],
   });
@@ -115,10 +116,20 @@ function App() {
 
   return (
     <>
-      <Navbar />
+      {/* <Navbar /> */}
+      <NavbarRBS />
       <Routes>
-        <Route path="/" element={<TimeEntry />} />
         <Route
+          path="/"
+          element={
+            <TimeEntry
+              userProfile={userProfile}
+              // setUserProfile={setUserProfile}
+              // timeZones={timeZones}
+            />
+          }
+        />
+        {/* <Route
           path="/ManageActivity"
           element={
             <ManageActivity
@@ -127,11 +138,11 @@ function App() {
               manageParentAccountName={parentAccountName}
             />
           }
-        />
+        /> */}
         <Route
-          path="/ManageActivity2"
+          path="/ManageActivities"
           element={
-            <ManageActivity2
+            <ManageActivities
               manageActivity={manageActivity}
               setManageActivity={setManageActivity}
               manageParentAccountName={parentAccountName}

@@ -2,14 +2,13 @@ import React, { useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IUserState as Props } from "../App";
 import { ITimeZonesState as TimeZoneProps } from "../App";
-import { PrimaryButton } from "@fluentui/react/lib/Button";
-import { IStackTokens, Stack } from "@fluentui/react/lib/Stack";
-import {
-  Dropdown,
-  // DropdownMenuItemType,
-  IDropdownOption,
-  IDropdownStyles,
-} from "@fluentui/react/lib/Dropdown";
+// import Dropdown from "react-bootstrap/Dropdown";
+// import DropdownButton from "react-bootstrap/DropdownButton";
+import Form from "react-bootstrap/Form";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import Button from "react-bootstrap/Button";
 
 interface IUserProps {
   userProfile: Props["userProfile"];
@@ -17,89 +16,122 @@ interface IUserProps {
   timeZones: TimeZoneProps["timeZones"];
 }
 
-const stackTokens: IStackTokens = { childrenGap: 20 };
-
-const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: { width: "auto" },
-};
-
 const UserProfile: React.FC<IUserProps> = ({
   userProfile,
   setUserProfile,
   timeZones,
 }) => {
-  const [selectedTimeZone, setSelectedTimeZone] =
-    React.useState<IDropdownOption>();
+  const [selectedTimeZoneId, setSelectedTimeZone] = React.useState<number>();
 
-  const timeZonesDisplay: IDropdownOption[] = timeZones.map((timeZone) => {
-    return {
-      key: timeZone.MDMTimeZoneId,
-      text: timeZone.MDMTimeZoneDisplayName,
-      Id: timeZone.Id,
-      TimeZoneName: timeZone.TimeZoneName,
-      MDMTimeZoneId: timeZone.MDMTimeZoneId,
-      MDMTimeZoneDisplayName: timeZone.MDMTimeZoneDisplayName,
-    };
+  const timeZonesDisplay = timeZones.map((timeZone) => {
+    return (
+      <option key={timeZone.Id} value={timeZone.Id}>
+        {timeZone.MDMTimeZoneDisplayName}
+      </option>
+    );
   });
 
+  // const timeZonesDisplay = timeZones.map((timeZone) => {
+  //   return (
+  //     <Dropdown.Item
+  //       key={timeZone.Id.toString()}
+  //       value={timeZone.Id.toString()}
+  //       id={timeZone.Id.toString()}
+  //     >
+  //       {timeZone.MDMTimeZoneDisplayName}
+  //     </Dropdown.Item>
+  //   );
+  // });
+
   useEffect(() => {
-    console.log("selectedTimeZone=", selectedTimeZone);
+    console.log("selectedTimeZoneId=", selectedTimeZoneId);
     console.log("userProfile=", userProfile);
-  }, [selectedTimeZone, userProfile]);
+  }, [selectedTimeZoneId, userProfile]);
 
   const handleDropdownChange = (
-    event: React.FormEvent<HTMLDivElement>,
-    item: IDropdownOption<any> | undefined,
-    index?: number | undefined
+    event: React.FormEvent<HTMLSelectElement>
   ): void => {
-    setSelectedTimeZone(item);
+    setSelectedTimeZone(parseInt(event.currentTarget.value, 10));
   };
 
   const handleClick = (): void => {
-    if (!selectedTimeZone) return;
+    if (!selectedTimeZoneId) return;
     setUserProfile({
       UserAlias: userProfile.UserAlias,
       UserName: userProfile.UserName,
       TimeZone: {
-        Id: userProfile.TimeZone.Id,
-        TimeZoneName: userProfile.TimeZone.TimeZoneName,
-        MDMTimeZoneId: selectedTimeZone.key,
-        MDMTimeZoneDisplayName: selectedTimeZone.text,
+        Id: selectedTimeZoneId,
+        TimeZoneName: timeZones.filter(
+          (timeZone) => timeZone.Id === selectedTimeZoneId
+        )[0].TimeZoneName,
+        MDMTimeZoneId: timeZones.filter(
+          (timeZone) => timeZone.Id === selectedTimeZoneId
+        )[0].MDMTimeZoneId,
+        MDMTimeZoneDisplayName: timeZones.filter(
+          (timeZone) => timeZone.Id === selectedTimeZoneId
+        )[0].MDMTimeZoneDisplayName,
       },
     });
   };
 
   return (
-    <div className="userProfile">
-      <h1>
-        {userProfile?.UserAlias
-          ? `Hello New User ${userProfile.UserName}`
-          : `Welcome ${userProfile.UserName}`}{" "}
-      </h1>
-      <h3>IS Time Tracker requires you to set a default time zone.</h3>
-      <Stack
-        horizontal
-        horizontalAlign="center"
-        tokens={stackTokens}
-        verticalAlign="end"
-      >
-        <Dropdown
-          label="Please enter your time zone:"
-          onChange={handleDropdownChange}
-          options={timeZonesDisplay}
-          styles={dropdownStyles}
-          required
-          selectedKey={
-            selectedTimeZone
-              ? selectedTimeZone.key
-              : userProfile.TimeZone.MDMTimeZoneId
-          }
-        ></Dropdown>
-        <Link to="/">
-          <PrimaryButton onClick={handleClick}>Submit Entry</PrimaryButton>
-        </Link>
-      </Stack>
-    </div>
+    // <div className="userProfile">
+    //   <h1>
+    //     {userProfile?.UserAlias
+    //       ? `Hello New User ${userProfile.UserName}`
+    //       : `Welcome ${userProfile.UserName}`}{" "}
+    //   </h1>
+    //   <h3>IS Time Tracker requires you to set a default time zone.</h3>
+    //   <label>Please enter your time zone:</label>
+    //   <select
+    //     name="select"
+    //     defaultValue={userProfile.TimeZone.Id}
+    //     onChange={handleDropdownChange}
+    //   >
+    //     {timeZonesDisplay}
+    //   </select>
+    //   {/* <DropdownButton
+    //     id="dropdown-btn"
+    //     title="Dropdown Button"
+    //     defaultValue={userProfile.TimeZone.Id}
+    //     onChange={handleDropdownChange}
+    //     // children={undefined}
+    //   >
+    //     {timeZonesDisplay}
+    //   </DropdownButton> */}
+    //   <Link to="/">
+    //     <button onClick={handleClick}>Submit Entry</button>
+    //   </Link>
+    // </div>
+    <Container>
+      <Row lg={6} className="justify-content-md-center mt-5">
+        <Col xl={6}>
+          <Form.Select
+            aria-label="Time Zone Select "
+            name="select"
+            defaultValue={userProfile.TimeZone.Id}
+            // value={userProfile.TimeZone.Id}
+            onChange={handleDropdownChange}
+          >
+            <option>Choose a time zone:</option>
+            {timeZonesDisplay}
+          </Form.Select>
+        </Col>
+        <Col xl={4}>
+          {/* <Link to="/"> */}
+          <Button
+            id="save-time-btn"
+            variant="primary"
+            className="ms-auto"
+            onClick={handleClick}
+          >
+            Submit Entry
+          </Button>
+          {userProfile.TimeZone.Id}
+          {/* </Link> */}
+        </Col>
+      </Row>
+    </Container>
   );
 };
 export default UserProfile;
